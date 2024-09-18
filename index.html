@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food E-Commerce Platform</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+        header { background: #4CAF50; color: white; padding: 10px; text-align: center; }
+        nav { margin: 20px 0; }
+        nav a { margin: 0 15px; text-decoration: none; color: #4CAF50; }
+        .container { display: flex; flex-wrap: wrap; justify-content: center; padding: 20px; }
+        .product { border: 1px solid #ccc; border-radius: 5px; padding: 10px; margin: 10px; width: 200px; text-align: center; }
+        .product img { max-width: 100%; height: auto; }
+        .filters { margin: 20px; }
+        .cart { margin: 20px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Food E-Commerce Platform</h1>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">Products</a>
+        <a href="#">Contact</a>
+    </nav>
+</header>
+
+<div class="filters">
+    <h2>Filter by Category:</h2>
+    <select id="categoryFilter" onchange="filterProducts()">
+        <option value="all">All</option>
+        <option value="fruits">Fruits</option>
+        <option value="vegetables">Vegetables</option>
+        <option value="dairy">Dairy</option>
+    </select>
+    
+    <h2>Search:</h2>
+    <input type="text" id="searchInput" onkeyup="searchProducts()" placeholder="Search for products...">
+</div>
+
+<div class="container" id="productContainer">
+    <div class="product" data-category="fruits">
+        <img src="apple.jpg" alt="Apple">
+        <h3>Apple</h3>
+        <p>$1.00</p>
+        <button onclick="addToCart('Apple', 1.00)">Add to Cart</button>
+    </div>
+    <div class="product" data-category="vegetables">
+        <img src="carrot.jpg" alt="Carrot">
+        <h3>Carrot</h3>
+        <p>$0.50</p>
+        <button onclick="addToCart('Carrot', 0.50)">Add to Cart</button>
+    </div>
+    <div class="product" data-category="dairy">
+        <img src="milk.jpg" alt="Milk">
+        <h3>Milk</h3>
+        <p>$1.50</p>
+        <button onclick="addToCart('Milk', 1.50)">Add to Cart</button>
+    </div>
+    <!-- Add more products as needed -->
+</div>
+
+<div class="cart">
+    <h2>Shopping Cart</h2>
+    <ul id="cartItems"></ul>
+    <p id="totalPrice">Total: $0.00</p>
+</div>
+
+<script>
+    let cart = [];
+    let total = 0;
+
+    function addToCart(item, price) {
+        cart.push({item, price});
+        total += price;
+        updateCart();
+    }
+
+    function updateCart() {
+        const cartItems = document.getElementById('cartItems');
+        cartItems.innerHTML = '';
+        cart.forEach(product => {
+            const li = document.createElement('li');
+            li.textContent = ${product.item}: $${product.price.toFixed(2)};
+            cartItems.appendChild(li);
+        });
+        document.getElementById('totalPrice').textContent = Total: $${total.toFixed(2)};
+    }
+
+    function filterProducts() {
+        const filter = document.getElementById('categoryFilter').value;
+        const products = document.querySelectorAll('.product');
+
+        products.forEach(product => {
+            if (filter === 'all' || product.dataset.category === filter) {
+                product.style.display = 'block';
+            } else {
+                product.style.display = 'none';
+            }
+        });
+    }
+
+    function searchProducts() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const products = document.querySelectorAll('.product');
+
+        products.forEach(product => {
+            const title = product.querySelector('h3').textContent.toLowerCase();
+            if (title.includes(input)) {
+                product.style.display = 'block';
+            } else {
+                product.style.display = 'none';
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
